@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+    <html>
+    <h1>Yatzy Strategy</h1>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Yatzy Strategy</title>
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <script src="index.js"></script>
+    </head>
+
+        <body>
+        <div style="display:flex;">
+            <div style="width: 300px;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Ones</td>
+                            <td><input type="number" id="category_ones" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Twos</td>
+                            <td><input type="number" id="category_twos" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Threes</td>
+                            <td><input type="number" id="category_threes" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Fours</td>
+                            <td><input type="number" id="category_fours" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Fives</td>
+                            <td><input type="number" id="category_fives" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Sixes</td>
+                            <td><input type="number" id="category_sixes" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td><input type="number" id="category_subtotal" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td>Bonus</td>
+                            <td><input type="number" id="category_bonus" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td>One Pair</td>
+                            <td><input type="number" id="category_one_pair" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Two Pairs</td>
+                            <td><input type="number" id="category_two_pairs" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Three of a Kind</td>
+                            <td><input type="number" id="category_three_of_a_kind" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Four of a Kind</td>
+                            <td><input type="number" id="category_four_of_a_kind" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Full House</td>
+                            <td><input type="number" id="category_full_house" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Small Straight</td>
+                            <td><input type="number" id="category_small_straight" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Large Straight</td>
+                            <td><input type="number" id="category_large_straight" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Chance</td>
+                            <td><input type="number" id="category_chance" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Yatzy</td>
+                            <td><input type="number" id="category_yatzy" onkeyup="on_scoresheet_change()" onchange="on_scoresheet_change()"/></td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td><input type="number" id="category_total" readonly /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-left: 20px;">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th width="120">Stage</th>
+                            <th width="350">Decision</th>
+                            <th width="75">Value</th>
+                            <th width="50">Actions</th>
+                        </tr>
+                        <tr id="row_start_of_turn">
+                            <td>Start of turn</td>
+                            <td>Fill the scoresheet</td>
+                            <td>
+                                <p id="start_of_turn_value"></p>
+                            </td>
+                            <td>
+                                <button id="start_of_turn_cancel" onclick="reset_stages()">Cancel</button>
+                                <button id="start_of_turn_apply" onclick="apply_start_of_turn()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_first_roll">
+                            <td>First roll</td>
+                            <td>
+                                <select id="first_die_1" class="dice-select" onchange="on_roll_change('first')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="first_die_2" class="dice-select" onchange="on_roll_change('first')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="first_die_3" class="dice-select" onchange="on_roll_change('first')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="first_die_4" class="dice-select" onchange="on_roll_change('first')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="first_die_5" class="dice-select" onchange="on_roll_change('first')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                            </td>
+                            <td>
+                                <p id="first_roll_value"></p>
+                            </td>
+                            <td>
+                                <button id="first_roll_apply" onclick="apply_first_roll()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_first_hold">
+                            <td>First hold</td>
+                            <td>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="first_hold_1" onchange="on_hold_change('first')" />
+                                    <span id="first_holdspan_1" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="first_hold_2" onchange="on_hold_change('first')" />
+                                    <span id="first_holdspan_2" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="first_hold_3" onchange="on_hold_change('first')" />
+                                    <span id="first_holdspan_3" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="first_hold_4" onchange="on_hold_change('first')" />
+                                    <span id="first_holdspan_4" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="first_hold_5" onchange="on_hold_change('first')" />
+                                    <span id="first_holdspan_5" class="hold-checkbox"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <p id="first_hold_value"></p>
+                            </td>
+                            <td>
+                                <button id="first_hold_apply" onclick="apply_first_hold()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_second_roll">
+                            <td>Second roll</td>
+                            <td>
+                                <select id="second_die_1" class="dice-select" onchange="on_roll_change('second')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="second_die_2" class="dice-select" onchange="on_roll_change('second')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="second_die_3" class="dice-select" onchange="on_roll_change('second')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="second_die_4" class="dice-select" onchange="on_roll_change('second')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="second_die_5" class="dice-select" onchange="on_roll_change('second')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                            </td>
+                            <td>
+                                <p id="second_roll_value"></p>
+                            </td>
+                            <td>
+                                <button id="second_roll_apply" onclick="apply_second_roll()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_second_hold">
+                            <td>Second hold</td>
+                            <td>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="second_hold_1" onchange="on_hold_change('second')" />
+                                    <span id="second_holdspan_1" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="second_hold_2" onchange="on_hold_change('second')" />
+                                    <span id="second_holdspan_2" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="second_hold_3" onchange="on_hold_change('second')" />
+                                    <span id="second_holdspan_3" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="second_hold_4" onchange="on_hold_change('second')" />
+                                    <span id="second_holdspan_4" class="hold-checkbox"></span>
+                                </label>
+                                <label class="hold-label">
+                                    <input type="checkbox" id="second_hold_5" onchange="on_hold_change('second')" />
+                                    <span id="second_holdspan_5" class="hold-checkbox"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <p id="second_hold_value"></p>
+                            </td>
+                            <td>
+                                <button id="second_hold_apply" onclick="apply_second_hold()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_third_roll">
+                            <td>Third roll</td>
+                            <td>
+                                <select id="third_die_1" class="dice-select" onchange="on_roll_change('third')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="third_die_2" class="dice-select" onchange="on_roll_change('third')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="third_die_3" class="dice-select" onchange="on_roll_change('third')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="third_die_4" class="dice-select" onchange="on_roll_change('third')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                                <select id="third_die_5" class="dice-select" onchange="on_roll_change('third')">
+                                    <option value="1">&#9856;</option>
+                                    <option value="2">&#9857;</option>
+                                    <option value="3">&#9858;</option>
+                                    <option value="4">&#9859;</option>
+                                    <option value="5">&#9860;</option>
+                                    <option value="6">&#9861;</option>
+                                    <option value="unknown" selected>&#10067;</option>
+                                </select>
+                            </td>
+                            <td>
+                                <p id="third_roll_value"></p>
+                            </td>
+                            <td>
+                                <button id="third_roll_apply" onclick="apply_third_roll()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_category_select">
+                            <td>Category select</td>
+                            <td>
+                                <select id="category" onchange="on_category_change()">
+                                    <option value="0">Ones</option>
+                                    <option value="1">Twos</option>
+                                    <option value="2">Threes</option>
+                                    <option value="3">Fours</option>
+                                    <option value="4">Fives</option>
+                                    <option value="5">Sixes</option>
+                                    <option value="6">One Pair</option>
+                                    <option value="7">Two Pairs</option>
+                                    <option value="8">Three of a kind</option>
+                                    <option value="9">Four of a kind</option>
+                                    <option value="10">Small Straight</option>
+                                    <option value="11">Large Straight</option>
+                                    <option value="12">Full House</option>
+                                    <option value="13">Chance</option>
+                                    <option value="14">Yatzy</option>
+                                </select>
+                                <span id="best_category">(Ones)</span>
+                            </td>
+                            <td>
+                                <p id="category_select_value"></p>
+                            </td>
+                            <td>
+                                <button id="category_select_apply" onclick="apply_category_select()">Apply</button>
+                            </td>
+                        </tr>
+                        <tr id="row_end_of_turn">
+                            <td>End of turn</td>
+                            <td>
+                                <span id="end_of_turn_text">...</span>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button id="end_of_turn_apply" onclick="apply_end_of_turn()">Apply</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
